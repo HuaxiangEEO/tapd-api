@@ -1,5 +1,6 @@
 # 敏感信息（包含 OAuth 凭证）
 tapd.json
+.env
 
 # Python 缓存
 __pycache__/
