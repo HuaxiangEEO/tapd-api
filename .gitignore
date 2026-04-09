@@ -1,0 +1,21 @@
+# 敏感信息（包含 OAuth 凭证）
+tapd.json
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Token 缓存
+~/.tapd_token_cache.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
