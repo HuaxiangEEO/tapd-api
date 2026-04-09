@@ -2,15 +2,41 @@
 """查询今天创建的 TAPD 缺陷并生成总结报告"""
 
 import json
+import os
 import urllib.parse
 import urllib.request
 from base64 import b64encode
 from datetime import datetime
+from pathlib import Path
 
-# TAPD 配置
-CLIENT_ID = "tapd-app-ee7f40"
-CLIENT_SECRET = "21F9478D-45EA-93AD-135A-A98AAC5CD40D"
-WORKSPACE_ID = "49394349"
+# 从环境变量或 .env 文件加载配置
+def load_env():
+    """从 .env 文件加载环境变量"""
+    env_file = Path(__file__).parent / ".env"
+    if env_file.exists():
+        with open(env_file) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, value = line.split("=", 1)
+                    os.environ.setdefault(key.strip(), value.strip())
+
+# 加载 .env
+load_env()
+
+# TAPD 配置（从环境变量读取）
+CLIENT_ID = os.getenv("TAPD_CLIENT_ID")
+CLIENT_SECRET = os.getenv("TAPD_CLIENT_SECRET")
+WORKSPACE_ID = os.getenv("TAPD_WORKSPACE_ID")
+
+# 验证配置
+if not CLIENT_ID or not CLIENT_SECRET or not WORKSPACE_ID:
+    print("❌ 错误：缺少 TAPD 配置")
+    print("请创建 .env 文件并设置以下环境变量：")
+    print("  TAPD_CLIENT_ID=your-client-id")
+    print("  TAPD_CLIENT_SECRET=your-client-secret")
+    print("  TAPD_WORKSPACE_ID=your-workspace-id")
+    exit(1)
 
 def get_access_token():
     """获取 OAuth access_token"""
